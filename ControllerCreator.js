@@ -44,6 +44,8 @@ const controllerCreator = async (tableName, tableComment, output) => {
     const controller = tmpl.replace(/\${TableName}/g, tableName).replace(/\${AppName}/g, AppName).replace(/\${AppNameLow}/g, AppNameLow).replace(/\${TableNameSingle}/g, TableNameSingle).replace(/\${TableComment}/g, tableComment);
     
     await fs.promises.writeFile(controllerPath, controller);
+
+    return `${AppName}Controller.js`;
 };
 
 export default controllerCreator;

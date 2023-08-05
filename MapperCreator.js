@@ -70,6 +70,8 @@ const serviceCreator = async (tableName, tableComment, tableInfo, output) => {
     const mapper = tmpl.replace(/\${TableName}/g, tableName).replace(/\${AppName}/g, AppName).replace(/\${AppNameLow}/g, AppNameLow).replace(/\${TableNameSingle}/g, TableNameSingle).replace(/\${TableComment}/g, tableComment).replace(/\${SelectFields}/g, selectFields.join(', ')).replace(/\${InsertFields}/g, insertFields.join(', ')).replace(/\${InsertValues}/g, insertValues.join(', '));
     
     await fs.promises.writeFile(mapperPath, mapper);
+
+    return `${AppName}Mapper.xml`;
 };
 
 export default serviceCreator;

@@ -22,7 +22,7 @@ const getTableInfo = async (dbcon, tableName) => {
         ORDER BY TABLE_NAME, ORDINAL_POSITION`;
 
     const input = [dbcon.connection.config.database, tableName];
-    console.log(input.join("."));
+    //console.log(input.join("."));
 
     const [ result ] = await dbcon.query(sql, input);
 

@@ -7,6 +7,7 @@ import { getTableList, getTableInfo } from "./DBHelper.js";
 import controllerCreator from "./ControllerCreator.js";
 import serviceCreator from "./ServiceCreator.js";
 import mapperCreator from "./MapperCreator.js";
+import { table } from 'table';
 
 // 현재 작업 디렉토리
 const cwd = shelljs.pwd().toString();
@@ -28,14 +29,29 @@ const env = {
 };
 
 // 프로그램 시작
-console.clear();
-console.log("================================================");
-console.log("|         MySQL DATABASE Util (by leekh)       |");
-console.log("================================================");
+//console.clear();
+
+const intro = [['MySQL DATABASE Util (by leekh)', '']];
+
+// const configTable = new Table({
+//     head: ['key', 'value']
+// });
 
 for (let key in env) {
-    console.log(`- ${key}: ${env[key]}`);
+    intro.push([key, env[key]]);
 }
+
+const introConfig = {
+    columns: [
+      { alignment: 'left' },
+      { alignment: 'right' }
+    ],
+    spanningCells: [
+      { col: 0, row: 0, colSpan: 2, alignment: 'center' }
+    ],
+  };
+
+console.log(table(intro, introConfig));
 
 (async () => {
     let dbcon = null;
@@ -67,7 +83,7 @@ for (let key in env) {
             tableList = [...tlist];
         }
 
-        console.log(tableList);
+        //console.log(tableList);
     } catch (e) {
         if (dbcon) {
             dbcon.release();
@@ -78,13 +94,35 @@ for (let key in env) {
     }
 
     /*********** 3. 테이블 정보 조회후 파일 생성 ***********/
+
+    const work = [['Create Source Code', '', '', '', '']];
+
+    work.push(['table', 'comment', 'controller', 'service', 'mapper']);
+
     for (const table of tableList) {
         const {name: tableName, comment: tableComment} = table;
-        await controllerCreator(tableName, tableComment, env.output);
-        await serviceCreator(tableName, tableComment, env.output);
+        const controllerName = await controllerCreator(tableName, tableComment, env.output);
+        const serviceName = await serviceCreator(tableName, tableComment, env.output);
         const tableInfo = await getTableInfo(dbcon, tableName);
-        await mapperCreator(tableName, tableComment, tableInfo, env.output);
+        const mapperName = await mapperCreator(tableName, tableComment, tableInfo, env.output);
+
+        work.push([tableName, tableComment, controllerName, serviceName, mapperName]);
     }
+
+    const config = {
+        columns: [
+          { alignment: 'left' },
+          { alignment: 'left' },
+          { alignment: 'right' },
+          { alignment: 'right' },
+          { alignment: 'right' }
+        ],
+        spanningCells: [
+          { col: 0, row: 0, colSpan: 5, alignment: 'center' }
+        ],
+      };
+
+    console.log(table(work, config));
 
     if (dbcon) {
         dbcon.release();

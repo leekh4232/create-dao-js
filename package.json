@@ -1,6 +1,6 @@
 {
   "name": "mkdao",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "",
   "type": "module",
   "main": "index.js",
@@ -19,6 +19,7 @@
     "exceljs": "^4.3.0",
     "minimist": "^1.2.8",
     "mysql2": "^2.3.3",
-    "shelljs": "^0.8.5"
+    "shelljs": "^0.8.5",
+    "table": "^6.8.1"
   }
 }

@@ -43,6 +43,8 @@ const serviceCreator = async (tableName, tableComment, output) => {
     const service = tmpl.replace(/\${TableName}/g, tableName).replace(/\${AppName}/g, AppName).replace(/\${AppNameLow}/g, AppNameLow).replace(/\${TableNameSingle}/g, TableNameSingle).replace(/\${TableComment}/g, tableComment);
     
     await fs.promises.writeFile(servicePath, service);
+
+    return `${AppName}Service.js`;
 };
 
 export default serviceCreator;
