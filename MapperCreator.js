@@ -1,13 +1,18 @@
 import fs from 'fs';
 import { singular, snakeToCamel } from "./Util.js";
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const serviceCreator = async (tableName, tableComment, tableInfo) => {
-    if (!fs.existsSync("./backend")) {
-        fs.mkdirSync("./backend");
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    
+    if (!fs.existsSync(`${__dirname}/backend`)) {
+        fs.mkdirSync(`${__dirname}/backend`);
     }
     
-    if (!fs.existsSync("./backend/mappers")) {
-        fs.mkdirSync("./backend/mappers");
+    if (!fs.existsSync(`${__dirname}/backend/mappers`)) {
+        fs.mkdirSync(`${__dirname}/backend/mappers`);
     }
 
     /*
@@ -28,7 +33,7 @@ const serviceCreator = async (tableName, tableComment, tableInfo) => {
     // console.log(`AppNameLow: ${AppNameLow}`);
     // console.log(`TableNameSingle: ${TableNameSingle}`);
 
-    const mapperPath = `./backend/mappers/${AppName}Mapper.xml`;
+    const mapperPath = `${__dirname}/backend/mappers/${AppName}Mapper.xml`;
 
     if (fs.existsSync(mapperPath)) {
         await fs.promises.unlink(mapperPath);
