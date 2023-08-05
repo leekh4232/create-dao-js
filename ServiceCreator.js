@@ -39,7 +39,7 @@ const serviceCreator = async (tableName, tableComment) => {
         await fs.promises.unlink(servicePath);
     }
 
-    const tmpl = await fs.promises.readFile('./template/service.tmpl', 'utf8');
+    const tmpl = await fs.promises.readFile(`${__dirname}/template/service.tmpl`, 'utf8');
     const service = tmpl.replace(/\${TableName}/g, tableName).replace(/\${AppName}/g, AppName).replace(/\${AppNameLow}/g, AppNameLow).replace(/\${TableNameSingle}/g, TableNameSingle).replace(/\${TableComment}/g, tableComment);
     
     await fs.promises.writeFile(servicePath, service);

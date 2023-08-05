@@ -40,7 +40,7 @@ const controllerCreator = async (tableName, tableComment) => {
         await fs.promises.unlink(controllerPath);
     }
 
-    const tmpl = await fs.promises.readFile('./template/controller.tmpl', 'utf8');
+    const tmpl = await fs.promises.readFile(`${__dirname}/template/controller.tmpl`, 'utf8');
     const controller = tmpl.replace(/\${TableName}/g, tableName).replace(/\${AppName}/g, AppName).replace(/\${AppNameLow}/g, AppNameLow).replace(/\${TableNameSingle}/g, TableNameSingle).replace(/\${TableComment}/g, tableComment);
     
     await fs.promises.writeFile(controllerPath, controller);

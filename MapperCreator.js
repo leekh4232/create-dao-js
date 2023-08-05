@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 const serviceCreator = async (tableName, tableComment, tableInfo) => {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
-    
+
     if (!fs.existsSync(`${__dirname}/backend`)) {
         fs.mkdirSync(`${__dirname}/backend`);
     }
@@ -66,7 +66,7 @@ const serviceCreator = async (tableName, tableComment, tableInfo) => {
     }
 
 
-    const tmpl = await fs.promises.readFile('./template/mapper.tmpl', 'utf8');
+    const tmpl = await fs.promises.readFile(`${__dirname}/template/mapper.tmpl`, 'utf8');
     const mapper = tmpl.replace(/\${TableName}/g, tableName).replace(/\${AppName}/g, AppName).replace(/\${AppNameLow}/g, AppNameLow).replace(/\${TableNameSingle}/g, TableNameSingle).replace(/\${TableComment}/g, tableComment).replace(/\${SelectFields}/g, selectFields.join(', ')).replace(/\${InsertFields}/g, insertFields.join(', ')).replace(/\${InsertValues}/g, insertValues.join(', '));
     
     await fs.promises.writeFile(mapperPath, mapper);
