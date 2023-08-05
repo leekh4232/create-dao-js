@@ -80,10 +80,10 @@ for (let key in env) {
     /*********** 3. 테이블 정보 조회후 파일 생성 ***********/
     for (const table of tableList) {
         const {name: tableName, comment: tableComment} = table;
-        await controllerCreator(tableName, tableComment);
-        await serviceCreator(tableName, tableComment);
+        await controllerCreator(tableName, tableComment, env.output);
+        await serviceCreator(tableName, tableComment, env.output);
         const tableInfo = await getTableInfo(dbcon, tableName);
-        await mapperCreator(tableName, tableComment, tableInfo);
+        await mapperCreator(tableName, tableComment, tableInfo, env.output);
     }
 
     if (dbcon) {

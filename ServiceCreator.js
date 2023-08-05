@@ -3,16 +3,16 @@ import { singular, snakeToCamel } from "./Util.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const serviceCreator = async (tableName, tableComment) => {
+const serviceCreator = async (tableName, tableComment, output) => {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
 
-    if (!fs.existsSync(`${__dirname}/backend`)) {
-        fs.mkdirSync(`${__dirname}/backend`);
+    if (!fs.existsSync(`${output}/backend`)) {
+        fs.mkdirSync(`${output}/backend`);
     }
     
-    if (!fs.existsSync(`${__dirname}/backend/services`)) {
-        fs.mkdirSync(`${__dirname}/backend/services`);
+    if (!fs.existsSync(`${output}/backend/services`)) {
+        fs.mkdirSync(`${output}/backend/services`);
     }
 
     /*
@@ -33,7 +33,7 @@ const serviceCreator = async (tableName, tableComment) => {
     // console.log(`AppNameLow: ${AppNameLow}`);
     // console.log(`TableNameSingle: ${TableNameSingle}`);
 
-    const servicePath = `${__dirname}/backend/services/${AppName}Service.js`;
+    const servicePath = `${output}/backend/services/${AppName}Service.js`;
 
     if (fs.existsSync(servicePath)) {
         await fs.promises.unlink(servicePath);

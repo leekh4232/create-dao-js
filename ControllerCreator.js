@@ -3,17 +3,17 @@ import { singular, snakeToCamel } from "./Util.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const controllerCreator = async (tableName, tableComment) => {
+const controllerCreator = async (tableName, tableComment, output) => {
 
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
 
-    if (!fs.existsSync(`${__dirname}/backend`)) {
-        fs.mkdirSync(`${__dirname}/backend`);
+    if (!fs.existsSync(`${output}/backend`)) {
+        fs.mkdirSync(`${output}/backend`);
     }
     
-    if (!fs.existsSync(`${__dirname}/backend/controllers`)) {
-        fs.mkdirSync(`${__dirname}/backend/controllers`);
+    if (!fs.existsSync(`${output}/backend/controllers`)) {
+        fs.mkdirSync(`${output}/backend/controllers`);
     }
 
     /*
@@ -34,7 +34,7 @@ const controllerCreator = async (tableName, tableComment) => {
     // console.log(`AppNameLow: ${AppNameLow}`);
     // console.log(`TableNameSingle: ${TableNameSingle}`);
 
-    const controllerPath = `${__dirname}/backend/controllers/${AppName}Controller.js`;
+    const controllerPath = `${output}/backend/controllers/${AppName}Controller.js`;
 
     if (fs.existsSync(controllerPath)) {
         await fs.promises.unlink(controllerPath);
