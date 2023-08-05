@@ -1,0 +1,14 @@
+/**
+ * /controllers/${AppName}Controller.js
+ * '${TableName}' 테이블(${TableComment})에 대한 비즈니스 로직을 처리하는 클래스
+ */
+
+const ServiceHelper = require('../helper/ServiceHelper');
+
+class ${AppName}Service extends ServiceHelper {
+    constructor() {
+        super('${AppName}Mapper');
+    }
+}
+
+module.exports = new ${AppName}Service();

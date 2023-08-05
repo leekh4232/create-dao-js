@@ -1,0 +1,24 @@
+{
+  "name": "mkdao",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "mkdao": "index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "leekh (leekh4232@gmail.com)",
+  "license": "ISC",
+  "dependencies": {
+    "console-table-printer": "^2.11.1",
+    "dayjs": "^1.11.7",
+    "dotenv": "^16.0.3",
+    "exceljs": "^4.3.0",
+    "minimist": "^1.2.8",
+    "mysql2": "^2.3.3",
+    "shelljs": "^0.8.5"
+  }
+}

@@ -1,0 +1,133 @@
+/**
+ * /controllers/${AppName}Controller.js
+ * '${TableName}' 테이블(${TableComment})에 대한 CRUD를 수행하기 위한 Rest Controller
+ */
+const ${AppNameLow}Service = require("../services/${AppName}Service");
+const BaseController = require("../helper/BaseController");
+const regexHelper = require("../helper/RegexHelper");
+const utilHelper = require("../../helper/UtilHelper");
+const logger = require("../helper/LogHelper");
+
+const API_URL = {
+    create: {
+        url: "/${TableNameSingle}",
+        secure: true
+    },
+    read: {
+        item: {
+            url: `/${TableNameSingle}/:id`,
+            secure: true
+        },
+        list: {
+            url: `/${TableNameSingle}`,
+            secure: true
+        },
+    },
+    update: {
+        url: `/${TableNameSingle}/:id`,
+        secure: true
+    },
+    delete: {
+        url: `/${TableNameSingle}/:id`,
+        secure: true
+    }
+};
+
+class ${AppName}Controller extends BaseController {
+    constructor(app) {
+        super(app, API_URL);
+    }
+
+    async readItem(req, res, next) {
+        let json = null;
+        const { id } = req.params;
+
+        try {
+            json = await ${AppNameLow}Service.getItem({id: id});
+            await eventService.updateHits({id: id});
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ data: json });
+    }
+
+    async readList(req, res, next) {
+        let json = null;
+        let pagenation = null;
+        const {page, ...query} = {...req.query};
+
+        try {
+            const count = await ${AppNameLow}Service.getCount(query);
+            pagenation = utilHelper.pagenation(count, page);
+            json = await ${AppNameLow}Service.getList({
+                ...query,
+                offset: pagenation.offset,
+                limit: pagenation.listCount
+            });
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ data: json });
+    }
+
+    async create(req, res, next) {
+        // 데이터 저장
+        let json = null;
+        const body = {...req.body};
+
+        try {
+            // regexHelper.value(title, "제목을 선택하세요");
+        } catch (err) {
+            return next(err);
+        }
+
+        try {
+            json = await ${AppNameLow}Service.setItem(body);
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ data: json });
+    }
+
+    async update(req, res, next) {
+        // 데이터 저장
+        let json = null;
+        const { id } = req.params;
+        const body = {...req.body};
+
+        try {
+            // regexHelper.value(title, "제목을 선택하세요");
+        } catch (err) {
+            return next(err);
+        }
+
+        try {
+            json = await ${AppNameLow}Service.editItem(body, {});
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ data: json });
+    }
+
+    async delete(req, res, next) {
+        // 데이터 저장
+        let json = null;
+        const { id } = req.params;
+        const query = req.query;
+
+        try {
+            await ${AppNameLow}Service.deleteItem({id: id}, []);
+            json = await ${AppNameLow}Service.getList(query);
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ data: json });
+    }
+}
+
+module.exports = (app) => new ${AppName}Controller(app).router;
