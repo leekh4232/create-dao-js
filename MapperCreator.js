@@ -48,12 +48,14 @@ const serviceCreator = async (tableName, tableComment, tableInfo, output) => {
         selectFields.push(`\`${column.COLUMN_NAME}\` AS \`${snakeToCamel(column.COLUMN_NAME)}\``);
         insertFields.push(`${column.COLUMN_NAME}`);
 
-        if (column.COLUMN_NAME === 'reg_date' || column.COLUMN_NAME === 'edit_date') {
-            insertValues.push(`now()`);
-        } else if (column.COLUMN_NAME === 'hits') {
-            insertValues.push(`0`);
-        } else {
-            insertValues.push(`#{${snakeToCamel(column.COLUMN_NAME)}}`);
+        if (column.COLUMN_NAME !== 'id') {
+            if (column.COLUMN_NAME === 'reg_date' || column.COLUMN_NAME === 'edit_date') {
+                insertValues.push(`now()`);
+            } else if (column.COLUMN_NAME === 'hits') {
+                insertValues.push(`0`);
+            } else {
+                insertValues.push(`#{${snakeToCamel(column.COLUMN_NAME)}}`);
+            }
         }
 
         if (column.COLUMN_NAME === 'reg_date' || column.COLUMN_NAME === 'hits') {
@@ -67,7 +69,7 @@ const serviceCreator = async (tableName, tableComment, tableInfo, output) => {
 
 
     const tmpl = await fs.promises.readFile(`${__dirname}/template/mapper.tmpl`, 'utf8');
-    const mapper = tmpl.replace(/\${TableName}/g, tableName).replace(/\${AppName}/g, AppName).replace(/\${AppNameLow}/g, AppNameLow).replace(/\${TableNameSingle}/g, TableNameSingle).replace(/\${TableComment}/g, tableComment).replace(/\${SelectFields}/g, selectFields.join(', ')).replace(/\${InsertFields}/g, insertFields.join(', ')).replace(/\${InsertValues}/g, insertValues.join(', '));
+    const mapper = tmpl.replace(/\${TableName}/g, tableName).replace(/\${AppName}/g, AppName).replace(/\${AppNameLow}/g, AppNameLow).replace(/\${TableNameSingle}/g, TableNameSingle).replace(/\${TableComment}/g, tableComment).replace(/\${SelectFields}/g, selectFields.join(', ')).replace(/\${InsertFields}/g, insertFields.join(', ')).replace(/\${InsertValues}/g, insertValues.join(', ')).replace(/\${UpdateFieldsAndValues}/g, updateFieldsAndValues.join(', '));
     
     await fs.promises.writeFile(mapperPath, mapper);
 
