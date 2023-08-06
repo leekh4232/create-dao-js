@@ -31,8 +31,8 @@
 
     <!-- 데이터 저장을 위한 기능 정의 -->
     <insert id="insertItem">
-        INSERT INTO ${TableName} (${InsertFields}, reg_date, edit_date) 
-        VALUES (${InsertValues}, now(), now())
+        INSERT INTO ${TableName} (${InsertFields}) 
+        VALUES (${InsertValues})
     </insert>
 
     <!-- 데이터 삭제를 위한 기능 정의 -->
@@ -42,24 +42,24 @@
 
     <!-- 데이터 갱신을 위한 기능 정의 -->
     <update id="updateItem">
-        UPDATE ${TableName} SET ${UpdateFieldsAndValues}, edit_date=now() WHERE id=#{id}
+        UPDATE ${TableName} SET ${UpdateFieldsAndValues} WHERE `id`=#{id}
     </update>
 
     <!-- 데이터 갱신을 위한 기능 정의 -->
     <update id="updateHits">
-        UPDATE ${TableName} SET hits=hits+1, edit_date=now() WHERE id=#{id}
+        UPDATE ${TableName} SET `hits`=hits+1, `edit_date=now()` WHERE `id`=#{id}
     </update>
 
     <!-- 데이터 수 조회하기  -->
     <select id="selectCountAll">
-        SELECT COUNT(*) AS cnt FROM ${TableName}
+        SELECT COUNT(*) AS `cnt` FROM ${TableName}
 
         <where>
             <if test="subject != null and subject != ''">
-                subject LIKE concat('%', #{title}, '%')
+                `subject` LIKE concat('%', #{title}, '%')
             </if>
             <if test="content != null and content != ''">
-                AND content LIKE concat('%', #{content}, '%')
+                AND `content` LIKE concat('%', #{content}, '%')
             </if>
         </where>
     </select>
