@@ -56,14 +56,14 @@ const serviceCreator = async (tableName, tableComment, tableInfo, output) => {
             } else {
                 insertValues.push(`#{${snakeToCamel(column.COLUMN_NAME)}}`);
             }
-        }
 
-        if (column.COLUMN_NAME === 'reg_date' || column.COLUMN_NAME === 'hits') {
-            continue;
-        } else if (column.COLUMN_NAME === 'edit_date') {
-            updateFieldsAndValues.push(`\`${column.COLUMN_NAME}\` = now()`);
-        } else {
-            updateFieldsAndValues.push(`\`${column.COLUMN_NAME}\` = #{${snakeToCamel(column.COLUMN_NAME)}}`);
+            if (column.COLUMN_NAME === 'reg_date' || column.COLUMN_NAME === 'hits') {
+                continue;
+            } else if (column.COLUMN_NAME === 'edit_date') {
+                updateFieldsAndValues.push(`\`${column.COLUMN_NAME}\` = now()`);
+            } else {
+                updateFieldsAndValues.push(`\`${column.COLUMN_NAME}\` = #{${snakeToCamel(column.COLUMN_NAME)}}`);
+            }
         }
     }
 
