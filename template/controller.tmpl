@@ -44,7 +44,7 @@ class ${AppName}Controller extends BaseController {
 
         try {
             json = await ${AppNameLow}Service.getItem({id: id});
-            await ${AppNameLow}Service.updateHits({id: id});
+            //await ${AppNameLow}Service.updateHits({id: id});
         } catch (err) {
             return next(err);
         }
@@ -74,13 +74,13 @@ class ${AppName}Controller extends BaseController {
             return next(err);
         }
 
-        res.sendResult({ data: json });
+        res.sendResult({ pagenation: pagenation, data: json });
     }
 
     async create(req, res, next) {
         // 데이터 저장
         let json = null;
-        const body = {...req.body};
+        const {/* 파라미터를 나열하세요 */} = req.body;
 
         try {
             // regexHelper.value(title, "제목을 선택하세요");
@@ -89,7 +89,9 @@ class ${AppName}Controller extends BaseController {
         }
 
         try {
-            json = await ${AppNameLow}Service.setItem(body);
+            json = await ${AppNameLow}Service.addItem({
+                /* 파라미터를 나열하세요 */
+            });
         } catch (err) {
             return next(err);
         }
@@ -101,7 +103,7 @@ class ${AppName}Controller extends BaseController {
         // 데이터 저장
         let json = null;
         const { id } = req.params;
-        const body = {...req.body};
+        const {/* 파라미터를 나열하세요 */} = req.body;
 
         try {
             // regexHelper.value(title, "제목을 선택하세요");
@@ -112,7 +114,7 @@ class ${AppName}Controller extends BaseController {
         try {
             json = await ${AppNameLow}Service.editItem({
                 id: id,
-                ...body
+                /* 파라미터를 나열하세요 */
             }, {});
         } catch (err) {
             return next(err);
@@ -124,17 +126,28 @@ class ${AppName}Controller extends BaseController {
     async delete(req, res, next) {
         // 데이터 저장
         let json = null;
+        let pagenation = null;
         const { id } = req.params;
-        const query = req.query;
+        const {page, field, keyword} = {...req.query};
+
+        const query = {};
+        if (field && keyword) {
+            query[field] = keyword;
+        }
 
         try {
-            await ${AppNameLow}Service.deleteItem({id: id}, []);
-            json = await ${AppNameLow}Service.getList(query);
+            await ${AppNameLow}Service.deleteItem({id: id}, []); 
+            pagenation = utilHelper.pagenation(count, page);
+            json = await ${AppNameLow}Service.getList({
+                ...query,
+                offset: pagenation.offset,
+                limit: pagenation.listCount
+            });
         } catch (err) {
             return next(err);
         }
 
-        res.sendResult({ data: json });
+        res.sendResult({ pagenation: pagenation, data: json });
     }
 }
 
