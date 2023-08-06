@@ -46,9 +46,10 @@ const serviceCreator = async (tableName, tableComment, tableInfo, output) => {
 
     for (const column of tableInfo) {
         selectFields.push(`\`${column.COLUMN_NAME}\` AS \`${snakeToCamel(column.COLUMN_NAME)}\``);
-        insertFields.push(`${column.COLUMN_NAME}`);
 
         if (column.COLUMN_NAME !== 'id') {
+            insertFields.push(`\`${column.COLUMN_NAME}\``);
+
             if (column.COLUMN_NAME === 'reg_date' || column.COLUMN_NAME === 'edit_date') {
                 insertValues.push(`now()`);
             } else if (column.COLUMN_NAME === 'hits') {
@@ -60,9 +61,9 @@ const serviceCreator = async (tableName, tableComment, tableInfo, output) => {
             if (column.COLUMN_NAME === 'reg_date' || column.COLUMN_NAME === 'hits') {
                 continue;
             } else if (column.COLUMN_NAME === 'edit_date') {
-                updateFieldsAndValues.push(`\`${column.COLUMN_NAME}\` = now()`);
+                updateFieldsAndValues.push(`\`${column.COLUMN_NAME}\`=now()`);
             } else {
-                updateFieldsAndValues.push(`\`${column.COLUMN_NAME}\` = #{${snakeToCamel(column.COLUMN_NAME)}}`);
+                updateFieldsAndValues.push(`\`${column.COLUMN_NAME}\`=#{${snakeToCamel(column.COLUMN_NAME)}}`);
             }
         }
     }
