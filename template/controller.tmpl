@@ -44,7 +44,7 @@ class ${AppName}Controller extends BaseController {
 
         try {
             json = await ${AppNameLow}Service.getItem({id: id});
-            await eventService.updateHits({id: id});
+            await ${AppNameLow}Service.updateHits({id: id});
         } catch (err) {
             return next(err);
         }
@@ -105,7 +105,10 @@ class ${AppName}Controller extends BaseController {
         }
 
         try {
-            json = await ${AppNameLow}Service.editItem(body, {});
+            json = await ${AppNameLow}Service.editItem({
+                id: id,
+                ...body
+            }, {});
         } catch (err) {
             return next(err);
         }
