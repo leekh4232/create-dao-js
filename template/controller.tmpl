@@ -55,7 +55,12 @@ class ${AppName}Controller extends BaseController {
     async readList(req, res, next) {
         let json = null;
         let pagenation = null;
-        const {page, ...query} = {...req.query};
+        const {page, field, keyword} = {...req.query};
+
+        const query = {};
+        if (field && keyword) {
+            query[field] = keyword;
+        }
 
         try {
             const count = await ${AppNameLow}Service.getCount(query);
